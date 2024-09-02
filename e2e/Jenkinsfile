@@ -1,9 +1,19 @@
+def supportedBaselines = "stage\ndev"
+
 pipeline {
     agent any
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch for APIT repo to checkout', trim: true)
+        choice(name: 'BASELINE', choices: "${supportedBaselines}", description: 'Baseline to run the APITs against')
+        string(name: 'OVERLAY', defaultValue: '', description: 'Overlay name (probably only supported on stage); leave empty to run on baseline', trim: true)
+    }
+
     options {
         disableConcurrentBuilds()
         timeout(time: 20, unit: 'MINUTES')
     }
+
     stages {
         stage('E2E') {
             steps {
