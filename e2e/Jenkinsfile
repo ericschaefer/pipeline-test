@@ -10,19 +10,20 @@ pipeline {
     }
 
     options {
-        disableConcurrentBuilds()
+        //disableConcurrentBuilds()
         timeout(time: 20, unit: 'MINUTES')
     }
 
     stages {
         stage('E2E') {
             steps {
-                sh "echo 'Running E2E Test...'"
+                step([$class: 'DescribeWithParamsBuilder', starter: 'true', separator: '', excludes: ''])
+                echo 'Running E2E Test...'
             }
         }
         stage('Reporting') {
             steps {
-                sh "echo 'Publishing E2E Report...'"
+                echo 'Publishing E2E Report...'
             }
         }
     }
